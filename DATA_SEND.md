@@ -1,4 +1,4 @@
-﻿# Data Send Implementation Plan - Make.com Webhook Integration
+# Data Send Implementation Plan - Make.com Webhook Integration
 
 ## Problems Identified
 
