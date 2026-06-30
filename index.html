@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solar Sparrechner – Jetzt kostenlos berechnen</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23F5A623'/><circle cx='50' cy='50' r='35' fill='%23FFF3D6'/><circle cx='50' cy='50' r='25' fill='%23F5A623'/><circle cx='50' cy='50' r='15' fill='%23FFF3D6'/></svg>">
+<meta property="og:title" content="Solar Sparrechner – Jetzt kostenlos berechnen">
+<meta property="og:description" content="Berechnen Sie in 60 Sekunden, wie viel Sie mit einer Solaranlage sparen können. Unverbindlich & kostenlos.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://via.placeholder.com/1200x630/F5A623/1A2E44?text=Solar+Sparrechner">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap');
+
+  :root {
+    --sun: #F5A623;
+    --sun-light: #FFF3D6;
+    --sky: #1A2E44;
+    --sky-mid: #2C4A6E;
+    --leaf: #2D7A4F;
+    --leaf-light: #E8F5EE;
+    --white: #FFFFFF;
+    --fog: #F7F8FA;
+    --border: #E2E6EA;
+    --text: #1A2E44;
+    --muted: #6B7C93;
+    --radius: 16px;
+    --shadow: 0 4px 24px rgba(26,46,68,0.10);
+    --teal: #0D9488;
+    --purple: #7C3AED;
+  }
+
+  /* ── Focus visible for accessibility ── */
+  :focus-visible {
+    outline: 2px solid var(--sun);
+    outline-offset: 2px;
+  }
+  .btn-toggle:focus-visible,
+  .cta:focus-visible {
+    outline: 2px solid var(--sun);
+    outline-offset: 2px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: linear-gradient(160deg, #1a2a3d 0%, #2a4a6a 60%, #2a5a3a 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+    position: relative;
+    overflow-x: hidden;
+  }
+  /* ── Noise texture overlay ── */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 24px;
+    max-width: 560px;
+    width: 100%;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.12);
+    border: 1px solid rgba(0,0,0,0.06);
+  }
+
+  /* ── Header ── */
+  .header {
+    background: linear-gradient(135deg, var(--sky) 0%, var(--sky-mid) 100%);
+    background-size: 200% 200%;
+    animation: headerGradient 9s ease-in-out infinite alternate;
+    padding: 36px 40px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  @keyframes headerGradient {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    right: -10px;
+    top: -20px;
+    width: 120px;
+    height: 120px;
+    opacity: 0.08;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23F5A623'/%3E%3Ccircle cx='50' cy='50' r='35' fill='%23FFF3D6'/%3E%3Ccircle cx='50' cy='50' r='25' fill='%23F5A623'/%3E%3Ccircle cx='50' cy='50' r='15' fill='%23FFF3D6'/%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.05) 1px, transparent 0);
+    background-size: 24px 24px;
+    pointer-events: none;
+  }
+  .header-label {
+    display: inline-block;
+    background: var(--sun);
+    color: var(--sky);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 100px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 8px rgba(245,166,35,0.3);
+  }
+  .header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 32px;
+    color: var(--white);
+    line-height: 1.25;
+    margin-bottom: 8px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  }
+  .header p {
+    color: rgba(255,255,255,0.65);
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  /* ── Celebration animation ── */
+  .confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: var(--sun);
+    animation: confetti-fall 3s ease-out forwards;
+    z-index: 1000;
+  }
+  @keyframes confetti-fall {
+    0% {
+      transform: translateY(-100vh) rotate(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100vh) rotate(720deg);
+      opacity: 0;
+    }
+  }
+
+  /* ── Progress bar ── */
+  .progress-bar {
+    height: 3px;
+    background: var(--fog);
+    width: 100%;
+    position: relative;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--sun), var(--teal));
+    transition: width 0.4s ease-out;
+    border-radius: 0 2px 2px 0;
+  }
+
+  /* ── Steps ── */
+  .steps-bar {
+    display: flex;
+    gap: 4px;
+    border-bottom: 1px solid var(--border);
+  }
+  .step-tab {
+    flex: 1;
+    padding: 16px 0;
+    margin: 0 2px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .step-tab.active {
+    color: var(--sky);
+    border-bottom-color: var(--sun);
+    font-weight: 600;
+  }
+  .step-tab.done {
+    color: var(--leaf);
+  }
+  .step-tab.done:hover {
+    color: var(--sky);
+  }
+
+  /* ── Form body ── */
+  .form-body {
+    padding: 48px 48px;
+  }
+
+  .step-panel { display: none; }
+  .step-panel.active { 
+    display: block;
+    animation: slideFadeIn 0.3s ease-out;
+  }
+  @keyframes slideFadeIn {
+    from { 
+      opacity: 0; 
+      transform: translateY(12px) scale(0.98);
+    }
+    to { 
+      opacity: 1; 
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .field {
+    margin-bottom: 32px;
+  }
+  .field + .field {
+    padding-top: 12px;
+    border-top: 1px solid rgba(226,230,234,0.5);
+  }
+  .field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--sky);
+    margin-bottom: 10px;
+    letter-spacing: 0.03em;
+  }
+  .field .hint {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 8px;
+    line-height: 1.65;
+  }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(to right, var(--sun) var(--pct, 0%), var(--border) var(--pct, 0%));
+    border-radius: 100px;
+    outline: none;
+    cursor: pointer;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--sun);
+    border: 3px solid var(--white);
+    box-shadow: 0 2px 8px rgba(245,166,35,0.5);
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+  }
+  input[type="range"]::-webkit-slider-thumb:hover {
+    box-shadow: 0 2px 12px rgba(245,166,35,0.6), 0 0 0 4px rgba(245,166,35,0.1);
+  }
+  .range-value {
+    display: inline-block;
+    background: var(--sun-light);
+    color: var(--sky);
+    font-weight: 600;
+    font-size: 15px;
+    padding: 6px 14px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    min-width: 120px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .btn-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  /* 4-option toggle groups use 2x2 grid layout */
+  .btn-group[data-cols="4"] {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .btn-toggle {
+    flex: 1;
+    min-width: 90px;
+    padding: 12px 10px;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    background: var(--white);
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+  }
+  .btn-toggle:active {
+    transform: scale(0.98);
+  }
+  .btn-toggle:hover { border-color: var(--sun); color: var(--sky); }
+  .btn-toggle.selected {
+    background: var(--sun-light);
+    border-color: var(--sun);
+    color: var(--sky);
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(245,166,35,0.2);
+  }
+
+  /* ── Input field icons ── */
+  .input-wrapper {
+    position: relative;
+  }
+  .input-wrapper svg {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    color: var(--muted);
+    pointer-events: none;
+    margin-right: 8px;
+  }
+
+  /* ── Custom checkbox ── */
+  input[type="checkbox"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    min-height: 20px;
+    flex-shrink: 0;
+    align-self: flex-start;
+    margin-top: 1px;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    background: var(--white);
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+  input[type="checkbox"]:checked {
+    background: var(--leaf);
+    border-color: var(--leaf);
+  }
+  input[type="checkbox"]:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1;
+  }
+  input[type="checkbox"]:hover {
+    border-color: var(--leaf);
+  }
+  input[type="checkbox"].error {
+    border-color: #e05a5a;
+    box-shadow: 0 0 0 3px rgba(224,90,90,0.15);
+  }
+
+  input[type="text"], input[type="email"], input[type="tel"] {
+    width: 100%;
+    padding: 13px 16px;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s;
+    background: var(--fog);
+  }
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  input[type="tel"]:focus {
+    border-color: var(--sun);
+    background: var(--white);
+    box-shadow: 0 0 0 3px rgba(245,166,35,0.15);
+  }
+
+  /* Must come after input[type] rules to override shorthand padding */
+  .input-wrapper input {
+    padding-left: 48px;
+  }
+
+  .cta {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--sun) 0%, #e8920f 100%);
+    color: var(--sky);
+    border: none;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: transform 0.15s, box-shadow 0.15s;
+    letter-spacing: 0.01em;
+  }
+  .cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(245,166,35,0.45);
+  }
+  .cta:active { transform: translateY(0); }
+
+  .back-link {
+    display: block;
+    text-align: center;
+    margin-top: 14px;
+    color: var(--muted);
+    font-size: 13px;
+    cursor: pointer;
+    text-decoration: underline;
+    background: none;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+  }
+  .back-link:hover { color: var(--sky); }
+
+  /* ── Result panel ── */
+  #result-panel {
+    padding: 48px 48px;
+    display: none;
+    position: relative;
+  }
+  .tiny-disclaimer {
+    position: absolute;
+    bottom: 6px;
+    right: 10px;
+    font-size: 8px;
+    line-height: 1;
+    color: #D5D9DE;
+    letter-spacing: 0.2px;
+    user-select: none;
+    pointer-events: none;
+  }
+  .result-hero {
+    background: linear-gradient(135deg, var(--sky) 0%, var(--sky-mid) 100%);
+    border-radius: 16px;
+    padding: 28px;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .result-hero .label {
+    color: rgba(255,255,255,0.6);
+    font-size: 12px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .result-hero .big-number {
+    font-family: 'DM Serif Display', serif;
+    font-size: 52px;
+    color: var(--sun);
+    line-height: 1;
+    margin-bottom: 8px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .result-hero .sub {
+    color: rgba(255,255,255,0.7);
+    font-size: 13px;
+  }
+
+  .result-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  /* ── Result card icons ── */
+  .result-card-icon {
+    width: 24px;
+    height: 24px;
+    margin: 0 auto 12px;
+    color: var(--leaf);
+  }
+  .result-card {
+    background: var(--fog);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  .result-card.animate {
+    animation: cardFadeIn 0.4s ease-out forwards;
+  }
+  @keyframes cardFadeIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .result-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+  .result-card .rc-value {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--leaf);
+    display: block;
+    margin-bottom: 4px;
+  }
+  .result-card .rc-label {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .disclaimer {
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.65;
+    margin-bottom: 24px;
+  }
+
+  .trust-row {
+    padding: 24px 48px 20px;
+    border-top: 1px solid var(--border);
+    background: linear-gradient(180deg, var(--fog) 0%, #f0f2f5 100%);
+  }
+  .trust-items {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-bottom: 14px;
+  }
+  .trust-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .trust-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .trust-footer a {
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .trust-footer a:hover {
+    color: var(--sky);
+    text-decoration: underline;
+  }
+  .trust-footer .sep {
+    color: var(--border);
+  }
+
+  /* ── Result CTA wrapper ── */
+  .result-cta-wrap {
+    margin: 0 40px 32px;
+    width: calc(100% - 80px);
+  }
+
+  /* ── Mobile breakpoint ── */
+  @media (max-width: 480px) {
+    .form-body, .header, #result-panel {
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+    .header h1 {
+      font-size: 26px;
+    }
+    .btn-toggle {
+      min-height: 44px;
+      padding: 14px 12px;
+    }
+    .cta {
+      min-height: 48px;
+      padding: 14px 16px;
+    }
+    /* Ensure input fields maintain adequate spacing on mobile */
+    .input-wrapper input {
+      padding: 14px 16px 14px 48px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="header">
+    <span class="header-label">Energielösungen Deutschland&nbsp;·&nbsp;Kostenloser Sparrechner</span>
+    <h1>Wie viel könnten Sie mit einer Solaranlage sparen?</h1>
+    <p>In 60 Sekunden zu Ihrer persönlichen Ersparnis – unverbindlich & kostenlos.</p>
+  </div>
+
+  <div class="progress-bar"><div class="progress-bar-fill" id="progressFill" style="width: 33%"></div></div>
+  <div class="steps-bar">
+    <div class="step-tab active" id="tab-1" onclick="handleTabClick(1)">1&nbsp;·&nbsp;Verbrauch</div>
+    <div class="step-tab" id="tab-2" onclick="handleTabClick(2)">2&nbsp;·&nbsp;Haus</div>
+    <div class="step-tab" id="tab-3" onclick="handleTabClick(3)">3&nbsp;·&nbsp;Kontakt</div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="form-body">
+    <div class="step-panel active" id="step-1">
+      <div class="field">
+        <label>Wie hoch ist Ihre monatliche Stromrechnung?</label>
+        <div class="range-value" id="stromVal">120 €/Monat</div>
+        <input type="range" id="strom" min="50" max="500" step="10" value="120"
+          oninput="document.getElementById('stromVal').textContent = this.value + '\u00A0€/Monat'; updateStromHint(this.value); checkStromMin(this.value)">
+        <p class="hint" id="stromHint">Entspricht ca. 2.400 kWh/Jahr – typisch für 1–2 Personen.</p>
+      </div>
+      <div class="field">
+        <label>Wer lebt in Ihrem Haushalt?</label>
+        <div class="btn-group" id="persons" role="group" aria-label="Haushaltsgröße">
+          <button class="btn-toggle" onclick="selectToggle('persons', this)" aria-pressed="false">1 Person</button>
+          <button class="btn-toggle selected" onclick="selectToggle('persons', this)" aria-pressed="true">2–3 Personen</button>
+          <button class="btn-toggle" onclick="selectToggle('persons', this)" aria-pressed="false">4+ Personen</button>
+        </div>
+      </div>
+      <button class="cta" onclick="goStep(2)">Weiter&nbsp;&rarr;</button>
+      <p id="stromWarning" style="display:none; color:#e8920f; font-size:12px; margin-top:8px; text-align:center;">
+        Sind Sie sicher? €50/Monat entspricht sehr geringem Verbrauch.
+      </p>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step-panel" id="step-2">
+      <div class="field">
+        <label>Wie ist Ihr Dach ausgerichtet?</label>
+        <div class="btn-group" id="dach" data-cols="4">
+          <button class="btn-toggle selected" onclick="selectToggle('dach', this)">Süd</button>
+          <button class="btn-toggle" onclick="selectToggle('dach', this)">Ost/West</button>
+          <button class="btn-toggle" onclick="selectToggle('dach', this)">Nord</button>
+          <button class="btn-toggle" onclick="selectToggle('dach', this)">Weiß ich nicht</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Wie groß ist Ihre Dachfläche ungefähr?</label>
+        <div class="range-value" id="dachVal">60 m²</div>
+        <input type="range" id="dachflaeche" min="20" max="200" step="5" value="60"
+          oninput="document.getElementById('dachVal').textContent = this.value + '\u00A0m²'; updateDachHint(this.value)">
+        <p class="hint" id="dachHint">Platz für ca. 26 Module → ~12,3 kWp</p>
+      </div>
+      <div class="field">
+        <label>Haben Sie Interesse an einem Batteriespeicher?</label>
+        <div class="btn-group" id="speicher">
+          <button class="btn-toggle selected" onclick="selectToggle('speicher', this)">Ja, gerne</button>
+          <button class="btn-toggle" onclick="selectToggle('speicher', this)">Vielleicht</button>
+          <button class="btn-toggle" onclick="selectToggle('speicher', this)">Nein</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Wie heizen Sie aktuell?</label>
+        <div class="btn-group" id="heizung" data-cols="4">
+          <button class="btn-toggle selected" onclick="selectToggle('heizung', this)">Wärmepumpe</button>
+          <button class="btn-toggle" onclick="selectToggle('heizung', this)">Öl/Gas</button>
+          <button class="btn-toggle" onclick="selectToggle('heizung', this)">Fernwärme</button>
+          <button class="btn-toggle" onclick="selectToggle('heizung', this)">Sonstiges</button>
+        </div>
+        <p class="hint">Wärmepumpen-Haushalte profitieren besonders von hoher Eigenverbrauchsquote.</p>
+      </div>
+      <div class="field">
+        <label>Wann nutzen Sie hauptsächlich Strom?</label>
+        <div class="btn-group" id="stromnutzung">
+          <button class="btn-toggle selected" onclick="selectToggle('stromnutzung', this)">Morgens und Abends</button>
+          <button class="btn-toggle" onclick="selectToggle('stromnutzung', this)">Verteilt über den Tag</button>
+          <button class="btn-toggle" onclick="selectToggle('stromnutzung', this)">Anderes</button>
+        </div>
+        <p class="hint">Wer tagsüber zuhause ist, kann mehr Solarstrom direkt verbrauchen.</p>
+      </div>
+      <button class="cta" onclick="goStep(3)">Weiter&nbsp;&rarr;</button>
+      <button class="back-link" onclick="goStep(1)">&larr;&nbsp;Zurück</button>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step-panel" id="step-3">
+      <p style="font-size:14px; color:var(--muted); margin-bottom:24px; line-height:1.6;">
+        Ihre Auswertung ist fertig — tragen Sie Ihre Daten ein, um das vollständige Ergebnis mit Förderdetails zu sehen.
+      </p>
+      <div class="field">
+        <label for="fname">Ihr Name</label>
+        <div class="input-wrapper">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <input type="text" id="fname" placeholder="z. B. Maria Müller" aria-label="Ihr Name" required>
+        </div>
+      </div>
+      <div class="field">
+        <label for="fplz">Postleitzahl</label>
+        <div class="input-wrapper">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <input type="text" id="fplz" inputmode="numeric" maxlength="5" placeholder="z. B. 80331" aria-label="Postleitzahl" required>
+        </div>
+      </div>
+      <div class="field">
+        <label for="fphone">Telefonnummer</label>
+        <div class="input-wrapper">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <input type="tel" id="fphone" placeholder="+49 ..." aria-label="Telefonnummer" required>
+        </div>
+      </div>
+      <div class="field">
+        <label for="femail">E-Mail-Adresse <span style="color:var(--muted); font-weight:400">(optional)</span></label>
+        <div class="input-wrapper">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <input type="email" id="femail" placeholder="ihre@email.de" aria-label="E-Mail-Adresse">
+        </div>
+      </div>
+      <div class="field">
+        <label id="dsgvo-label" style="display:flex; align-items:flex-start; gap:10px;">
+          <input type="checkbox" id="fdsgvo" aria-label="Datenschutz zustimmen">
+          <span id="dsgvo-text" style="font-size:13px; font-weight:400; color:var(--text); line-height:1.6; transition:color 0.2s;">
+            Ich stimme der Verarbeitung meiner Daten gemäß der <a href="#datenschutz" style="color:var(--sky);">Datenschutzerklärung</a> zu und bin einverstanden, dass Energielösungen Deutschland mich kontaktiert.
+          </span>
+        </label>
+        <p id="dsgvo-error" style="display:none; color:#e05a5a; font-size:12px; margin-top:6px; padding-left:30px;">
+          Bitte stimmen Sie der Datenschutzerklärung zu, um fortzufahren.
+        </p>
+      </div>
+      <button class="cta" id="submitBtn" onclick="showResult()">Meine Ersparnis berechnen</button>
+      <button class="back-link" onclick="goStep(2)">&larr;&nbsp;Zurück</button>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="result-panel">
+    <div class="result-hero">
+      <div class="label">Ihre geschätzte jährliche Ersparnis</div>
+      <div class="big-number" id="res-saving">–</div>
+      <div class="sub">pro Jahr bei aktuellen Strompreisen</div>
+    </div>
+
+    <div class="result-grid">
+      <div class="result-card">
+        <svg class="result-card-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        <span class="rc-value" id="res-kwp">–</span>
+        <span class="rc-label">Empfohlene Anlagengröße</span>
+      </div>
+      <div class="result-card">
+        <svg class="result-card-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+        <span class="rc-value" id="res-co2">–</span>
+        <span class="rc-label">CO₂ eingespart pro Jahr</span>
+      </div>
+      <div class="result-card">
+        <svg class="result-card-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="rc-value" id="res-amort">–</span>
+        <span class="rc-label">Amortisationszeit</span>
+      </div>
+      <div class="result-card">
+        <svg class="result-card-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+        <span class="rc-value" id="res-foerder">–</span>
+        <span class="rc-label">Indikative Förderung</span>
+      </div>
+    </div>
+
+    <p class="disclaimer">
+      Diese Berechnung ist eine unverbindliche Schätzung auf Basis von bundesweiten Durchschnittswerten.<br>
+      Ein Berater wird sich mit Ihrer genauen Auswertung bei Ihnen melden.
+    </p>
+    <p style="font-size:13px; color:var(--sky); text-align:center; margin-bottom:20px;">
+      Ihr persönlicher Berater meldet sich innerhalb von 24 Stunden mit Ihrer detaillierten Auswertung.
+    </p>
+
+    <div class="result-cta-wrap">
+      <button class="cta"
+        onclick="this.textContent='✓\u00A0Wir melden uns in Kürze bei Ihnen!'; this.style.background='var(--leaf)'; this.style.color='white'; this.disabled=true;">
+        Kostenloses Beratungsgespräch vereinbaren
+      </button>
+    </div>
+    <span class="tiny-disclaimer">Angaben ohne Gewähr</span>
+  </div>
+
+  <div class="trust-row">
+    <div class="trust-items">
+      <div class="trust-item">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;flex-shrink:0"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Keine Weitergabe
+      </div>
+      <div class="trust-item">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;flex-shrink:0"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg>
+        100% kostenlos
+      </div>
+      <div class="trust-item">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;flex-shrink:0"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Kein Spam
+      </div>
+    </div>
+    <div class="trust-footer">
+      <a href="#impressum">Impressum</a>
+      <span class="sep">·</span>
+      <a href="#datenschutz">Datenschutzerklärung</a>
+    </div>
+  </div>
+</div>
+
+<script>
+// Track completed steps
+let completedSteps = [1]; // Step 1 is initially completed (default values)
+
+function handleTabClick(stepNum) {
+  // Only allow navigation to completed steps or current step
+  if (completedSteps.includes(stepNum) || stepNum === getCurrentStep()) {
+    goStep(stepNum);
+  }
+}
+
+function getCurrentStep() {
+  for (let i = 1; i <= 3; i++) {
+    if (document.getElementById('step-' + i).classList.contains('active')) {
+      return i;
+    }
+  }
+  return 1;
+}
+
+function selectToggle(groupId, btn) {
+  document.querySelectorAll('#' + groupId + ' .btn-toggle')
+    .forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+// Update range slider progress track
+function updateRangeProgress() {
+  document.querySelectorAll('input[type="range"]').forEach(slider => {
+    const min = parseFloat(slider.min) || 0;
+    const max = parseFloat(slider.max) || 100;
+    const val = parseFloat(slider.value) || 0;
+    const pct = ((val - min) / (max - min)) * 100;
+    slider.style.setProperty('--pct', pct + '%');
+  });
+}
+
+// Initialize on page load and on input
+document.addEventListener('DOMContentLoaded', () => {
+  updateRangeProgress();
+  // Clear DSGVO error when user checks the box
+  document.getElementById('fdsgvo').addEventListener('change', (e) => {
+    if (e.target.checked) {
+      e.target.classList.remove('error');
+      document.getElementById('dsgvo-error').style.display = 'none';
+      document.getElementById('dsgvo-text').style.color = 'var(--text)';
+    }
+  });
+});
+document.querySelectorAll('input[type="range"]').forEach(slider => {
+  slider.addEventListener('input', updateRangeProgress);
+});
+
+function goStep(n) {
+  // Mark current step as completed when moving forward
+  const currentStep = getCurrentStep();
+  if (n > currentStep && !completedSteps.includes(currentStep)) {
+    completedSteps.push(currentStep);
+  }
+  
+  for (let i = 1; i <= 3; i++) {
+    document.getElementById('step-' + i).classList.remove('active');
+    document.getElementById('tab-' + i).classList.remove('active');
+    if (i < n) document.getElementById('tab-' + i).classList.add('done');
+    else document.getElementById('tab-' + i).classList.remove('done');
+  }
+  document.getElementById('step-' + n).classList.add('active');
+  document.getElementById('tab-' + n).classList.add('active');
+  
+  // Update progress bar
+  const progressFill = document.getElementById('progressFill');
+  if (progressFill) {
+    const progress = (n / 3) * 100;
+    progressFill.style.width = progress + '%';
+  }
+  
+  // Scroll to top on step transition
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+// Celebration confetti animation
+function triggerConfetti() {
+  const colors = ['#F5A623', '#2D7A4F', '#0D9488', '#7C3AED'];
+  const confettiCount = 30;
+  
+  for (let i = 0; i < confettiCount; i++) {
+    setTimeout(() => {
+      const confetti = document.createElement('div');
+      confetti.className = 'confetti';
+      confetti.style.left = Math.random() * 100 + 'vw';
+      confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+      confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+      confetti.style.animationDelay = Math.random() * 0.5 + 's';
+      document.body.appendChild(confetti);
+      
+      setTimeout(() => confetti.remove(), 4000);
+    }, i * 30);
+  }
+}
+
+// Mark all steps as done when showing result
+function markAllStepsDone() {
+  for (let i = 1; i <= 3; i++) {
+    document.getElementById('tab-' + i).classList.add('done');
+    document.getElementById('tab-' + i).classList.remove('active');
+  }
+}
+
+function updateStromHint(val) {
+  const strompreis = 0.37; // Strompreis 2024/25: 0.37 €/kWh
+  const kwh = Math.round(val * 12 / strompreis);
+  let desc = '';
+  if (val < 100) desc = '1 Person';
+  else if (val < 150) desc = '1–2 Personen';
+  else if (val < 220) desc = '2–3 Personen';
+  else if (val < 300) desc = '3–4 Personen';
+  else desc = 'großer Haushalt';
+  document.getElementById('stromHint').textContent =
+    'Entspricht ca. ' + kwh.toLocaleString('de-DE') + ' kWh/Jahr – typisch für ' + desc + '.';
+}
+
+function updateDachHint(val) {
+  const MODUL_WP = 475;
+  const MODUL_FLAECHE = 1.95;
+  const NUTZBARE_DACHFLAECHE = 0.85;
+  const anzahlModule = Math.max(1, Math.floor((val * NUTZBARE_DACHFLAECHE) / MODUL_FLAECHE));
+  const kwp = (anzahlModule * MODUL_WP) / 1000;
+  document.getElementById('dachHint').textContent =
+    'Platz für ca. ' + anzahlModule + ' Module → ~' + kwp.toFixed(1) + ' kWp';
+}
+
+// Count-up animation function
+function countUp(el, end, duration) {
+  const start = 0;
+  const startTime = performance.now();
+  
+  function update(currentTime) {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    
+    // Easing function for smooth animation
+    const easeOut = 1 - Math.pow(1 - progress, 3);
+    const current = Math.round(start + (end - start) * easeOut);
+    
+    el.textContent = current.toLocaleString('de-DE') + ' €';
+    
+    if (progress < 1) {
+      requestAnimationFrame(update);
+    }
+  }
+  
+  requestAnimationFrame(update);
+}
+
+// Check if electricity slider is at minimum and show warning
+function checkStromMin(val) {
+  const warning = document.getElementById('stromWarning');
+  if (val == 50) {
+    warning.style.display = 'block';
+  } else {
+    warning.style.display = 'none';
+  }
+}
+
+// ── Webhook URL – hier deine Make.com Webhook URL eintragen ──
+const MAKE_WEBHOOK_URL = 'https://hook.eu1.make.com/ymhd3sa563ldld6dwhph1ph4fipmkyff';
+
+
+
+// ── UTM-Parameter beim Laden der Seite lesen ──
+const UTM = (() => {
+  const p = new URLSearchParams(window.location.search);
+  return {
+    source:   p.get('utm_source')   || '',
+    medium:   p.get('utm_medium')   || '',
+    campaign: p.get('utm_campaign') || '',
+    adset:    p.get('utm_adset')    || '',
+    ad:       p.get('utm_ad')       || '',
+  };
+})();
+
+async function showResult() {
+  // ── Validierung ──
+  const name  = document.getElementById('fname').value.trim();
+  const plz   = document.getElementById('fplz').value.trim();
+  const phone = document.getElementById('fphone').value.trim();
+  const email = document.getElementById('femail').value.trim();
+
+  let valid = true;
+
+  // DSGVO checkbox check
+  if (!document.getElementById('fdsgvo').checked) {
+    document.getElementById('fdsgvo').classList.add('error');
+    document.getElementById('dsgvo-error').style.display = 'block';
+    document.getElementById('dsgvo-text').style.color = '#e05a5a';
+    valid = false;
+  }
+
+  if (!name) {
+    document.getElementById('fname').style.borderColor = '#e05a5a';
+    document.getElementById('fname').focus();
+    valid = false;
+  } else {
+    document.getElementById('fname').style.borderColor = '';
+  }
+
+  // PLZ validation: exactly 5 digits, range 10000-99999
+  const plzRegex = /^\d{5}$/;
+  if (!plz || !plzRegex.test(plz) || parseInt(plz) < 10000 || parseInt(plz) > 99999) {
+    document.getElementById('fplz').style.borderColor = '#e05a5a';
+    if (valid) document.getElementById('fplz').focus();
+    valid = false;
+  } else {
+    document.getElementById('fplz').style.borderColor = '';
+  }
+
+  const digits = phone.replace(/[^0-9]/g, '');
+  // Looser phone validation: accept international formats (10-15 digits, +, spaces, dashes, parentheses)
+  if (digits.length < 10 || digits.length > 15) {
+    document.getElementById('fphone').style.borderColor = '#e05a5a';
+    // Add or update error message
+    let errorMsg = document.getElementById('fphone-error');
+    if (!errorMsg) {
+      errorMsg = document.createElement('p');
+      errorMsg.id = 'fphone-error';
+      errorMsg.style.color = '#e05a5a';
+      errorMsg.style.fontSize = '12px';
+      errorMsg.style.marginTop = '4px';
+      document.getElementById('fphone').parentNode.appendChild(errorMsg);
+    }
+    errorMsg.textContent = 'Bitte geben Sie eine gültige Telefonnummer ein.';
+    if (valid) document.getElementById('fphone').focus();
+    valid = false;
+  } else {
+    document.getElementById('fphone').style.borderColor = '';
+    const errorMsg = document.getElementById('fphone-error');
+    if (errorMsg) errorMsg.remove();
+  }
+
+  if (!valid) return;
+
+  // ── Berechnung ──
+  const strom = parseInt(document.getElementById('strom').value);
+  const dach  = parseInt(document.getElementById('dachflaeche').value);
+
+  const dachSelected = document.querySelector('#dach .selected')?.textContent || 'Süd';
+  const ertragProKwp = dachSelected === 'Süd'      ? 1050
+                     : dachSelected === 'Ost/West'  ? 950
+                     : dachSelected === 'Nord'      ? 750
+                     : 950;
+
+  const heizung  = document.querySelector('#heizung .selected')?.textContent      || 'Wärmepumpe';
+  const nutzung  = document.querySelector('#stromnutzung .selected')?.textContent || 'Morgens und Abends';
+  const speicher = document.querySelector('#speicher .selected')?.textContent     || 'Ja, gerne';
+  const personen = document.querySelector('#persons .selected')?.textContent      || '2–3 Personen';
+
+  const MODUL_WP          = 475;
+  const MODUL_FLAECHE     = 1.95;
+  const NUTZBARE_DACHFLAECHE = 0.85;
+  const anzahlModule = Math.max(1, Math.floor((dach * NUTZBARE_DACHFLAECHE) / MODUL_FLAECHE));
+  const kwp = Math.min(Math.round(anzahlModule * MODUL_WP) / 1000, 30);
+
+  const jahresertrag = kwp * ertragProKwp;
+
+  const strompreis         = 0.37; // Strompreis 2024/25: 0.37 €/kWh (Bundesnetzagentur Durchschnitt)
+  const einspeiseverguetung = 0.0813; // EEG Q1 2025: 0.0813 €/kWh
+  const verbrauchKwh       = (strom * 12) / strompreis;
+
+  // Personen-basierter Verbrauchsmultiplier
+  const personenMultiplier = personen === '1 Person' ? 0.85
+                            : personen === '4+ Personen' ? 1.20
+                            : 1.00;
+  const adjustedVerbrauchKwh = verbrauchKwh * personenMultiplier;
+
+  let eigenverbrauchsquote = 0.30;
+  if (speicher === 'Ja, gerne')         eigenverbrauchsquote += 0.20;
+  else if (speicher === 'Vielleicht')   eigenverbrauchsquote += 0.10;
+  if (heizung === 'Wärmepumpe')         eigenverbrauchsquote += 0.05;
+  if (nutzung === 'Verteilt über den Tag')  eigenverbrauchsquote += 0.10;
+  else if (nutzung === 'Morgens und Abends') eigenverbrauchsquote -= 0.05;
+  eigenverbrauchsquote = Math.min(Math.max(eigenverbrauchsquote, 0.20), 0.65);
+
+  const eigenverbrauchKwh = Math.min(jahresertrag * eigenverbrauchsquote, adjustedVerbrauchKwh);
+  const einspeisungKwh    = jahresertrag - eigenverbrauchKwh;
+  const saving = Math.round(eigenverbrauchKwh * strompreis + einspeisungKwh * einspeiseverguetung);
+
+  let investitionProKwp = 1450;
+  if (speicher === 'Ja, gerne')       investitionProKwp += 700;
+  else if (speicher === 'Vielleicht') investitionProKwp += 350;
+  const investition = kwp * investitionProKwp;
+  const amort  = Math.round((investition / saving) * 10) / 10;
+  const co2    = Math.round((jahresertrag * 0.380) / 100) / 10; // CO₂-Faktor 2024: 0.380 kg/kWh (Bundesnetzagentur) - Division durch 100 konvertiert zu Tonnen
+  // Indikative Förderung basierend auf Anlagengröße (kWp-basierte Schätzung)
+  let foerderText = '';
+  if (kwp <= 10) foerderText = 'ca. 2.000–5.000 €';
+  else if (kwp <= 20) foerderText = 'ca. 5.000–12.000 €';
+  else foerderText = 'ca. 12.000–20.000 €';
+
+  // ── Ergebnisse ins UI schreiben ──
+  countUp(document.getElementById('res-saving'), saving, 1200);
+  // document.getElementById('res-saving').textContent  = saving.toLocaleString('de-DE') + ' €';
+  document.getElementById('res-kwp').textContent     = kwp.toFixed(1) + ' kWp';
+  document.getElementById('res-co2').textContent     = co2.toFixed(1) + ' t';
+  document.getElementById('res-amort').textContent   = amort.toFixed(1) + ' Jahre';
+  document.getElementById('res-foerder').textContent = foerderText;
+
+  markAllStepsDone();
+  document.querySelector('.form-body').style.display = 'none';
+  document.querySelector('.steps-bar').style.display = 'none';
+  document.getElementById('result-panel').style.display = 'block';
+  
+  // Trigger celebration animation
+  triggerConfetti();
+  
+  // Animate result cards with staggered delay
+  const resultCards = document.querySelectorAll('.result-card');
+  resultCards.forEach((card, index) => {
+    setTimeout(() => {
+      card.classList.add('animate');
+    }, index * 100);
+  });
+
+  // ── Lead-Daten an Make.com schicken ──
+  const payload = {
+    // Kontaktdaten
+    name,
+    plz,
+    telefon:  phone,
+    email:    email || '',
+
+    // Formular-Inputs
+    strom_monatlich_eur: strom,
+    personen,
+    dachausrichtung:    dachSelected,
+    dachflaeche_m2:     dach,
+    speicher,
+    heizung,
+    stromnutzung:       nutzung,
+
+    // Berechnete Ergebnisse
+    ersparnis_jahr_eur: saving,
+    anlage_kwp:         parseFloat(kwp.toFixed(1)),
+    anzahl_module:      anzahlModule,
+    amortisation_jahre: amort,
+    co2_einsparung_t:   co2,
+    kfw_foerderkredit:  foerder,
+
+    // Meta Ad Tracking
+    utm_source:   UTM.source,
+    utm_medium:   UTM.medium,
+    utm_campaign: UTM.campaign,
+    utm_adset:    UTM.adset,
+    utm_ad:       UTM.ad,
+
+    // Meta
+    timestamp:  new Date().toISOString(),
+    seite:      window.location.href,
+  };
+
+  fetch(MAKE_WEBHOOK_URL, {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify(payload),
+  }).catch(err => console.error('Webhook-Fehler:', err));
+  // Kein await – UI blockiert nicht, Fehler werden still gefangen
+}
+</script>
+</body>
+</html>
