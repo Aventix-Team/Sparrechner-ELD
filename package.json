@@ -1,0 +1,22 @@
+{
+  "name": "sparrechner-eld",
+  "version": "1.0.0",
+  "description": "Solar Sparrechner – Jetzt kostenlos berechnen",
+  "main": "solar-sparrechner_letzte-Version.html",
+  "scripts": {
+    "dev": "npx serve .",
+    "build": "echo 'Build complete - static HTML project'",
+    "test": "echo 'No tests configured'",
+    "lint": "echo 'No linter configured'"
+  },
+  "keywords": [
+    "solar",
+    "calculator",
+    "savings"
+  ],
+  "author": "Aventix-Team",
+  "license": "ISC",
+  "dependencies": {
+    "@vercel/speed-insights": "^1.1.0"
+  }
+}
