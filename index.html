@@ -748,7 +748,7 @@
           Bitte stimmen Sie der Datenschutzerklärung zu, um fortzufahren.
         </p>
       </div>
-      <button class="cta" id="submitBtn" onclick="showResult()">Meine Ersparnis berechnen</button>
+      <button class="cta" id="submitBtn" onclick="showResult()">Mein Ersparnis berechnen</button>
       <button class="back-link" onclick="goStep(2)">&larr;&nbsp;Zurück</button>
     </div>
   </div>
@@ -1006,7 +1006,7 @@ const UTM = (() => {
 })();
 
 async function showResult() {
-  // ── Validierung ──
+  // -- Validierung --
   const name  = document.getElementById('fname').value.trim();
   const plz   = document.getElementById('fplz').value.trim();
   const phone = document.getElementById('fphone').value.trim();
@@ -1054,7 +1054,7 @@ async function showResult() {
       errorMsg.style.marginTop = '4px';
       document.getElementById('fphone').parentNode.appendChild(errorMsg);
     }
-    errorMsg.textContent = 'Bitte geben Sie eine gültige Telefonnummer ein.';
+    errorMsg.textContent = 'Bitte geben Sie eine g�ltige Telefonnummer ein.';
     if (valid) document.getElementById('fphone').focus();
     valid = false;
   } else {
@@ -1065,20 +1065,20 @@ async function showResult() {
 
   if (!valid) return;
 
-  // ── Berechnung ──
+  // -- Berechnung --
   const strom = parseInt(document.getElementById('strom').value);
   const dach  = parseInt(document.getElementById('dachflaeche').value);
 
-  const dachSelected = document.querySelector('#dach .selected')?.textContent || 'Süd';
-  const ertragProKwp = dachSelected === 'Süd'      ? 1050
+  const dachSelected = document.querySelector('#dach .selected')?.textContent || 'S�d';
+  const ertragProKwp = dachSelected === 'S�d'      ? 1050
                      : dachSelected === 'Ost/West'  ? 950
                      : dachSelected === 'Nord'      ? 750
                      : 950;
 
-  const heizung  = document.querySelector('#heizung .selected')?.textContent      || 'Wärmepumpe';
+  const heizung  = document.querySelector('#heizung .selected')?.textContent      || 'W�rmepumpe';
   const nutzung  = document.querySelector('#stromnutzung .selected')?.textContent || 'Morgens und Abends';
   const speicher = document.querySelector('#speicher .selected')?.textContent     || 'Ja, gerne';
-  const personen = document.querySelector('#persons .selected')?.textContent      || '2–3 Personen';
+  const personen = document.querySelector('#persons .selected')?.textContent      || '2�3 Personen';
 
   const MODUL_WP          = 475;
   const MODUL_FLAECHE     = 1.95;
@@ -1088,8 +1088,8 @@ async function showResult() {
 
   const jahresertrag = kwp * ertragProKwp;
 
-  const strompreis         = 0.37; // Strompreis 2024/25: 0.37 €/kWh (Bundesnetzagentur Durchschnitt)
-  const einspeiseverguetung = 0.0813; // EEG Q1 2025: 0.0813 €/kWh
+  const strompreis         = 0.37; // Strompreis 2024/25: 0.37 �/kWh (Bundesnetzagentur Durchschnitt)
+  const einspeiseverguetung = 0.0813; // EEG Q1 2025: 0.0813 �/kWh
   const verbrauchKwh       = (strom * 12) / strompreis;
 
   // Personen-basierter Verbrauchsmultiplier
@@ -1101,8 +1101,8 @@ async function showResult() {
   let eigenverbrauchsquote = 0.30;
   if (speicher === 'Ja, gerne')         eigenverbrauchsquote += 0.20;
   else if (speicher === 'Vielleicht')   eigenverbrauchsquote += 0.10;
-  if (heizung === 'Wärmepumpe')         eigenverbrauchsquote += 0.05;
-  if (nutzung === 'Verteilt über den Tag')  eigenverbrauchsquote += 0.10;
+  if (heizung === 'W�rmepumpe')         eigenverbrauchsquote += 0.05;
+  if (nutzung === 'Verteilt �ber den Tag')  eigenverbrauchsquote += 0.10;
   else if (nutzung === 'Morgens und Abends') eigenverbrauchsquote -= 0.05;
   eigenverbrauchsquote = Math.min(Math.max(eigenverbrauchsquote, 0.20), 0.65);
 
@@ -1115,38 +1115,14 @@ async function showResult() {
   else if (speicher === 'Vielleicht') investitionProKwp += 350;
   const investition = kwp * investitionProKwp;
   const amort  = Math.round((investition / saving) * 10) / 10;
-  const co2    = Math.round((jahresertrag * 0.380) / 100) / 10; // CO₂-Faktor 2024: 0.380 kg/kWh (Bundesnetzagentur) - Division durch 100 konvertiert zu Tonnen
-  // Indikative Förderung basierend auf Anlagengröße (kWp-basierte Schätzung)
+  const co2    = Math.round((jahresertrag * 0.380) / 100) / 10; // CO2-Faktor 2024: 0.380 kg/kWh (Bundesnetzagentur) - Division durch 100 konvertiert zu Tonnen
+  // Indikative F�rderung basierend auf Anlagengr��e (kWp-basierte Sch�tzung)
   let foerderText = '';
-  if (kwp <= 10) foerderText = 'ca. 2.000–5.000 €';
-  else if (kwp <= 20) foerderText = 'ca. 5.0    00–12.000 €';
-  else foerderText = 'ca. 12.000–20.000 €';
+  if (kwp <= 10) foerderText = 'ca. 2.000�5.000 �';
+  else if (kwp <= 20) foerderText = 'ca. 5.0    00�12.000 �';
+  else foerderText = 'ca. 12. 000�20.000 �';
 
-  // ── Ergebnisse ins UI schreiben ──
-  countUp(document.getElementById('res-saving'), saving, 1200);
-  // document.getElementById('res-saving').textContent  = saving.toLocaleString('de-DE') + ' €';
-  document.getElementById('res-kwp').textContent     = kwp.toFixed(1) + ' kWp';
-  document.getElementById('res-co2').textContent     = co2.toFixed(1) + ' t';
-  document.getElementById('res-amort').textContent   = amort.toFixed(1) + ' Jahre';
-  document.getElementById('res-foerder').textContent = foerderText;
-
-  markAllStepsDone();
-  document.querySelector('.form-body').style.display = 'none';
-  document.querySelector('.steps-bar').style.display = 'none';
-  document.getElementById('result-panel').style.display = 'block';
-  
-  // Trigger celebration animation
-  triggerConfetti();
-  
-  // Animate result cards with staggered delay
-  const resultCards = document.querySelectorAll('.result-card');
-  resultCards.forEach((card, index) => {
-    setTimeout(() => {
-      card.classList.add('animate');
-    }, index * 100);
-  });
-
-  // ── Lead-Daten an Make.com schicken ──
+  // -- Lead-Daten an Make.com schicken --
   const payload = {
     // Kontaktdaten
     name,
@@ -1169,7 +1145,7 @@ async function showResult() {
     anzahl_module:      anzahlModule,
     amortisation_jahre: amort,
     co2_einsparung_t:   co2,
-    kfw_foerderkredit:  foerder,
+    kfw_foederkredit:  foerderText,
 
     // Meta Ad Tracking
     utm_source:   UTM.source,
@@ -1183,12 +1159,75 @@ async function showResult() {
     seite:      window.location.href,
   };
 
-  fetch(MAKE_WEBHOOK_URL, {
-    method:  'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body:    JSON.stringify(payload),
-  }).catch(err => console.error('Webhook-Fehler:', err));
-  // Kein await – UI blockiert nicht, Fehler werden still gefangen
+  // Add loading state to button
+  const submitBtn = document.getElementById('submitBtn');
+  const originalBtnText = submitBtn.textContent;
+  submitBtn.textContent = 'Wird gesendet...';
+  submitBtn.disabled = true;
+  submitBtn.style.opacity = '0.7';
+
+  try {
+    // Send webhook before showing results
+    const response = await fetch(MAKE_WEBHOOK_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      console.error('Webhook-Fehler: Server antwortete mit Status', response.status);
+    }
+
+    // -- Ergebnisse ins UI schreiben --
+    countUp(document.getElementById('res-saving'), saving, 1200);
+    document.getElementById('res-kwp').textContent     = kwp.toFixed(1) + ' kWp';
+    document.getElementById('res-co2').textContent     = co2.toFixed(1) + ' t';
+    document.getElementById('res-amort').textContent   = amort.toFixed(1) + ' Jahre';
+    document.getElementById('res-foerder').textContent = foerderText;
+
+    markAllStepsDone();
+    document.querySelector('.form-body').style.display = 'none';
+    document.querySelector('.steps-bar').style.display = 'none';
+    document.getElementById('result-panel').style.display = 'block';
+
+    // Trigger celebration animation
+    triggerConfetti();
+
+    // Animate result cards with staggered delay
+    const resultCards = document.querySelectorAll('.result-card');
+    resultCards.forEach((card, index) => {
+      setTimeout(() => {
+        card.classList.add('animate');
+      }, index * 100);
+    });
+  } catch (err) {
+    console.error('Webhook-Fehler:', err);
+    // Still show results even if webhook fails
+    countUp(document.getElementById('res-saving'), saving, 1200);
+    document.getElementById('res-kwp').textContent     = kwp.toFixed(1) + ' kWp';
+    document.getElementById('res-co2').textContent     = co2.toFixed(1) + ' t';
+    document.getElementById('res-amort').textContent   = amort.toFixed(1) + ' Jahre';
+    document.getElementById('res-foerder').textContent = foerderText;
+
+    markAllStepsDone();
+    document.querySelector('.form-body').style.display = 'none';
+    document.querySelector('.steps-bar').style.display = 'none';
+    document.getElementById('result-panel').style.display = 'block';
+
+    triggerConfetti();
+
+    const resultCards = document.querySelectorAll('.result-card');
+    resultCards.forEach((card, index) => {
+      setTimeout(() => {
+        card.classList.add('animate');
+      }, index * 100);
+    });
+  } finally {
+    // Restore button state
+    submitBtn.textContent = originalBtnText;
+    submitBtn.disabled = false;
+    submitBtn.style.opacity = '1';
+  }
 }
 </script>
 </body>
